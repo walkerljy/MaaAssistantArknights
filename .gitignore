@@ -488,3 +488,4 @@ install-*
 # CMake user presets
 CMakeUserPresets.json
 .ace-tool/
+3rdparty/EmulatorExtras
