@@ -549,7 +549,8 @@ bool BlackFlowLifecycleTaskPlugin::check_shop_stock()
     }
 
     m_shop_checked = true;
-    m_shop_decision_pending = true;
+    // 找到目标就直接从商店页退出并保存，不再等离店；只有没找到才需要在离店后重开。
+    m_shop_decision_pending = !m_shop_target_seen;
 
     // 把这一屏认到的商品回传界面，侧边日志里能直接对照是不是认错了。
     auto info = basic_info_with_what("BlackFlowShopStock");
@@ -561,8 +562,17 @@ bool BlackFlowLifecycleTaskPlugin::check_shop_stock()
     }
     callback(AsstMsg::SubTaskExtraInfo, info);
 
+    if (m_shop_target_seen) {
+        // 和刷开局命中一样：退出到主题页并保留这一局，任务视作完成。
+        // 直接在商店页退出，避免先离店导致下次回来还要重新进店。
+        LogInfo << __FUNCTION__ << "target collectible found, exit the run from the shop page";
+        m_control_ptr->exit_then_stop(false);
+        m_task_ptr->set_enable(false);
+        return true;
+    }
+
     // 没刷到目标藏品且开了投资时先存钱再离店，否则直接离店。
-    const bool invest = !m_shop_target_seen && m_investment_enabled;
+    const bool invest = m_investment_enabled;
     Task.set_task_base(
         "BlackFlow@Roguelike@Page-ShopAction",
         invest ? "BlackFlow@Roguelike@Page-ShopInvest" : "BlackFlow@Roguelike@Page-ShopLeave");
