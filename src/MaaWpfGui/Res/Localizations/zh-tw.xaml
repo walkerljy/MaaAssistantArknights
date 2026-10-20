@@ -786,6 +786,8 @@ D:\
     <system:String x:Key="GoldTimesLimit">投資 N 個源石錠後停止任務</system:String>
     <system:String x:Key="StopOnGoldLimit">儲備源石錠達到上限時停止</system:String>
     <system:String x:Key="InvestmentEnabled">投資源石錠</system:String>
+    <system:String x:Key="RoguelikeNoCollectStoreVoucher">招募券留存（不招募）</system:String>
+    <system:String x:Key="RoguelikeNoCollectStoreVoucherTip">開啟後，戰鬥掉落的招募券在招募介面點｢把券存下來｣留存，可在險路盡頭節點使用；關閉則按預設流程招募。</system:String>
     <system:String x:Key="InvestmentWithMoreScore">投資模式啟用購物、招募、進 2 層</system:String>
     <system:String x:Key="RoguelikeCollectibleModeShopping">刷開局模式啟用購物</system:String>
     <system:String x:Key="RoguelikeStartWithSelectList">刷開局期望獎勵</system:String>

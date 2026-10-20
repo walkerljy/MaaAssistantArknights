@@ -1110,6 +1110,12 @@ Sarkaz 테마, Investment 모드, "연금술 분대" 또는 "지원 분대"일 �
 <br>
 목표 탐험은 지원 선택 화면의 보상을 모두 인식한 뒤 판단합니다. 하나라도 일치하면 완료합니다. 보상은 인식했지만 원하는 것이 없으면 해당 탐험을 포기하고 준비 탐험을 다시 진행합니다. 하나도 인식하지 못했거나 깃털 뱀 보상을 요구했는데 파란색 보상을 읽지 못하면 지원 선택 화면에 머문 채 작업을 중지하고 스크린샷을 `debug/roguelike`에 저장합니다. 0이면 지원 선택 화면에 들어가는 즉시 완료합니다. 진행 상황은 `SubTaskExtraInfo`의 `BlackFlowStartRun` 콜백으로 전달됩니다. [콜백 스키마](./callback-schema.md)를 참고하세요.  
 :::  
+::: field nocoll_store_voucher
+@type boolean
+@default true
+@optional
+모드 30004에서는 전투에서 드롭된 모집권을 모집 화면에서 보관하여 모집이나 승진에 사용하지 않고 ｢험로의 끝｣ 노드에서 사용할 수 있게 합니다. 끄면 기본 절차대로 모집합니다. (기계 번역)  
+:::  
 ::: field find_playTime_target  
 @type number
 @optional

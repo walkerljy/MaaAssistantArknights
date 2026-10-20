@@ -787,6 +787,8 @@ MAA는 비설치형 응용 프로그램으로, 삭제 시 레지스트리 항목
     <system:String x:Key="GoldTimesLimit">N번 투자 후 작업 중지</system:String>
     <system:String x:Key="StopOnGoldLimit">예치금 잔액 최대 달성 시 중지</system:String>
     <system:String x:Key="InvestmentEnabled">오리지늄각뿔 투자 진행</system:String>
+    <system:String x:Key="RoguelikeNoCollectStoreVoucher">모집권 보관(모집 안 함)</system:String>
+    <system:String x:Key="RoguelikeNoCollectStoreVoucherTip">켜면 전투에서 드롭된 모집권을 모집 화면에서 보관하여 험로의 끝 노드에서 사용할 수 있게 합니다. 끄면 기본 절차대로 모집합니다.</system:String>
     <system:String x:Key="InvestmentWithMoreScore">투자 도중 모집/2구역 진입/쇼핑 진행</system:String>
     <system:String x:Key="RoguelikeCollectibleModeShopping">작전 지원 선택 모드 쇼핑 활성화</system:String>
     <system:String x:Key="RoguelikeStartWithSelectList">작전 지원 보상 선택</system:String>

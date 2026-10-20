@@ -161,6 +161,11 @@ public class RoguelikeTask : BaseTask, IJsonOnDeserialized
     public bool BlackFlowStartRunFastFlight { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether 无藏刷开局把战斗掉落的招募券留存起来，不招募也不晋升
+    /// </summary>
+    public bool NoCollectStoreVoucher { get; set; } = true;
+
+    /// <summary>
     /// Gets or sets a value indicating whether 使用非好友助战
     /// </summary>
     public bool UseSupportNonFriend { get; set; }

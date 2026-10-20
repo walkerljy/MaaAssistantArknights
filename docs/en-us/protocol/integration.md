@@ -1107,6 +1107,12 @@ Desired starting rewards for the target run of mode 30003, as a bitmask in the r
 <br>
 On the support selection page, the target run first recognizes all rewards on the page, then decides: if any desired reward is present, the task completes; if rewards were recognized but none is desired, the run is abandoned and a new preparation run starts; if no reward could be recognized, or feathered serpent rewards were requested but the blue rewards could not be read, the task stops on the support selection page and saves a screenshot to `debug/roguelike`. With 0, the task completes as soon as the support selection page appears. Progress is reported through the `BlackFlowStartRun` callback of `SubTaskExtraInfo`; see [Callback Schema](./callback-schema.md).  
 :::  
+::: field nocoll_store_voucher
+@type boolean
+@default true
+@optional
+In mode 30004, recruit vouchers from battle drops are stored on the recruit screen instead of being used to recruit or promote, so they can be used at the Final node. When disabled, vouchers are recruited as usual. (machine-translated)  
+:::
 ::: field find_playTime_target
 @type number
 @optional

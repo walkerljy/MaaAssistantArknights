@@ -1108,6 +1108,12 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 <br>
 目標局在選擇支援頁先辨識出頁面上的全部獎勵再判斷：命中任意一項時完成；辨識出了獎勵但沒有期望的，放棄該局，重新進行準備局；一項都沒辨識出，或要求了羽蛇獎勵卻讀不出藍色獎勵時，停在選擇支援頁並停止任務，截圖儲存到 `debug/roguelike`。為 0 時進入選擇支援頁即完成。進度透過 `SubTaskExtraInfo` 的 `BlackFlowStartRun` 回呼，見 [回呼訊息協定](./callback-schema.md)。  
 :::  
+::: field nocoll_store_voucher
+@type boolean
+@default true
+@optional
+模式 30004 中，戰鬥掉落的招募券在招募介面點｢把券存下來｣留存，而不是直接招募或晉升；留存後可在險路盡頭節點使用。關閉時按預設流程招募。  
+:::  
 ::: field find_playTime_target  
 @type number
 @optional

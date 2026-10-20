@@ -218,6 +218,11 @@ public class AsstRoguelikeTask : AsstBaseTask
     public bool BlackFlowStartRunFastFlight { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether 无藏刷开局把战斗掉落的招募券留存起来，不招募也不晋升
+    /// </summary>
+    public bool NoCollectStoreVoucher { get; set; } = true;
+
+    /// <summary>
     /// Gets or sets a value indicating whether 是否在五层BOSS前停下来
     /// </summary>
     public bool StopAtFinalBoss { get; set; }
@@ -241,6 +246,7 @@ public class AsstRoguelikeTask : AsstBaseTask
             ["difficulty"] = Difficulty,
             ["starts_count"] = Starts,
             ["investment_enabled"] = InvestmentEnabled,
+            ["nocoll_store_voucher"] = NoCollectStoreVoucher,
         };
 
         // 快速飞三层：分队、职业组和开局干员换成满天赋机械师的固定开局，沿用 Core 刷等级的默认策略。

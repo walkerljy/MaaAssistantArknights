@@ -787,6 +787,8 @@ MAA は非インストール型のアプリケーションであり、レジス�
     <system:String x:Key="GoldTimesLimit">N回投資した後に停止する</system:String>
     <system:String x:Key="StopOnGoldLimit">源石錐が上限に達した後に停止する</system:String>
     <system:String x:Key="InvestmentEnabled">源石錐を投資する</system:String>
+    <system:String x:Key="RoguelikeNoCollectStoreVoucher">招集券を保管（招集しない）</system:String>
+    <system:String x:Key="RoguelikeNoCollectStoreVoucherTip">オンにすると、戦闘でドロップした招集券を招集画面で保管し、険路の果てノードで使用できるようにします。オフの場合は通常どおり招集します。</system:String>
     <system:String x:Key="InvestmentWithMoreScore">投資モードでは買い物、採用、2階への入場が可能</system:String>
     <system:String x:Key="RoguelikeCollectibleModeShopping">支援選択を得るモードで、ショッピング有効化</system:String>
     <system:String x:Key="RoguelikeStartWithSelectList">支援選択の期待される報酬</system:String>

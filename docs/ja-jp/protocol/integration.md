@@ -1107,6 +1107,12 @@ Sarkaz テーマ、Investment モード、 ｢破棘成金分隊｣ または �
 <br>
 目標の探索では支援選択画面の報酬をすべて認識してから判断します。いずれかが一致すれば完了します。報酬は認識できたが狙うものがない場合はその探索を放棄し、準備用の探索をやり直します。1 つも認識できない場合、または羽蛇の報酬を指定したのに青色の報酬を読み取れない場合は、支援選択画面に留まってタスクを停止し、スクリーンショットを `debug/roguelike` に保存します。0 の場合は支援選択画面に入った時点で完了します。進捗は `SubTaskExtraInfo` の `BlackFlowStartRun` コールバックで通知されます。[コールバックスキーマ](./callback-schema.md) を参照してください。  
 :::  
+::: field nocoll_store_voucher
+@type boolean
+@default true
+@optional
+モード 30004 では、戦闘でドロップした招集券を招集画面で保管し、招集や昇進に使わずに｢険路の果て｣ノードで使用できるようにします。オフの場合は通常どおり招集します。（機械翻訳）  
+:::  
 ::: field find_playTime_target  
 @type number
 @optional

@@ -43,11 +43,16 @@ private:
 
     // 无藏刷开局：战斗掉落是一排卡片，只拿源石锭、招募券和｢抉择｣零件，剩下的藏品点｢直接离开｣
     bool take_no_collect_drops();
+    // 无藏刷开局：招募券打开招募界面后按设置把券留存起来，不招募也不晋升
+    bool store_voucher();
+    [[nodiscard]] bool on_drop_overlay() const;
 
     bool m_start_run = false;
     bool m_no_collect_start_run = false;
     // 界面上的 ｢投资源石锭｣：无藏刷开局没刷到目标藏品时先存钱再离店
     bool m_investment_enabled = false;
+    // 界面上的 ｢招募券留存｣：无藏刷开局把战斗掉落的招募券存下来，不招募
+    bool m_store_voucher = true;
     bool m_prepared_run_finished = false;
     std::string m_start_core_char;
     std::string m_target_squad;

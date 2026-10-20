@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <optional>
 #include <utility>
 
 #include "MaaUtils/Platform.h"
@@ -50,6 +51,7 @@ bool BlackFlowLifecycleTaskPlugin::load_params(const json::value& params)
     m_shop_target_seen = false;
     m_shop_decision_pending = false;
     m_investment_enabled = params.get("investment_enabled", true);
+    m_store_voucher = m_no_collect_start_run && params.get("nocoll_store_voucher", true);
     if (m_config->get_theme() == RoguelikeTheme::BlackFlow) {
         // 默认直接离店；第一层商店认完商品后再按有没有目标藏品决定要不要先存钱。
         Task.set_task_base("BlackFlow@Roguelike@Page-ShopAction", "BlackFlow@Roguelike@Page-ShopLeave");
@@ -600,23 +602,75 @@ bool BlackFlowLifecycleTaskPlugin::decide_shop_target()
     return true;
 }
 
+bool BlackFlowLifecycleTaskPlugin::on_drop_overlay() const
+{
+    const auto image = ctrler()->get_image();
+    Matcher take(image);
+    take.set_task_info("BlackFlow@Roguelike@GetDrop");
+    if (take.analyze()) {
+        return true;
+    }
+    Matcher leave(image);
+    leave.set_task_info("BlackFlow@Roguelike@GetDropLeave");
+    return leave.analyze().has_value();
+}
+
+bool BlackFlowLifecycleTaskPlugin::store_voucher()
+{
+    LogTraceFunction;
+
+    // 招募界面右上角的｢把券存下来｣，只在有券可存时出现；存满时可能不出现或点不出确认框。
+    std::optional<Point> store_point;
+    for (int attempt = 0; attempt < 8 && !store_point; ++attempt) {
+        Matcher matcher(ctrler()->get_image());
+        matcher.set_task_info("BlackFlow@Roguelike@StoreRecruitVoucher");
+        const auto result = matcher.analyze();
+        if (!result) {
+            sleep(400);
+            continue;
+        }
+        store_point = Point { result->rect.x + result->rect.width / 2, result->rect.y + result->rect.height / 2 };
+    }
+    if (!store_point) {
+        LogInfo << __FUNCTION__ << "store voucher button not found";
+        return false;
+    }
+    LogInfo << __FUNCTION__ << "click store voucher at" << store_point->x << store_point->y;
+    ctrler()->click(*store_point);
+    sleep(800);
+
+    // 弹出｢留存这张招募券｣确认框，点｢确认留存｣。
+    for (int attempt = 0; attempt < 12; ++attempt) {
+        Matcher matcher(ctrler()->get_image());
+        matcher.set_task_info("BlackFlow@Roguelike@StoreRecruitVoucherConfirm");
+        const auto result = matcher.analyze();
+        if (!result) {
+            sleep(400);
+            continue;
+        }
+        const Point confirm_point { result->rect.x + result->rect.width / 2,
+                                    result->rect.y + result->rect.height / 2 };
+        LogInfo << __FUNCTION__ << "confirm store voucher at" << confirm_point.x << confirm_point.y;
+        ctrler()->click(confirm_point);
+        // 等回到掉落界面再继续处理剩下的卡。
+        for (int wait = 0; wait < 10; ++wait) {
+            sleep(400);
+            if (on_drop_overlay()) {
+                return true;
+            }
+        }
+        return true;
+    }
+    LogInfo << __FUNCTION__ << "store voucher confirm not found, maybe the voucher storage is full";
+    return false;
+}
+
 bool BlackFlowLifecycleTaskPlugin::take_no_collect_drops()
 {
     LogTraceFunction;
 
     // DropsFlag 在地图上也会频繁命中，先用掉落界面独有的｢收下｣/｢直接离开｣模板确认一下，
     // 不是掉落界面就直接交回任务链，省掉整屏 OCR。
-    const auto on_drop_overlay = [&]() {
-        const auto image = ctrler()->get_image();
-        Matcher take(image);
-        take.set_task_info("BlackFlow@Roguelike@GetDrop");
-        if (take.analyze()) {
-            return true;
-        }
-        Matcher leave(image);
-        leave.set_task_info("BlackFlow@Roguelike@GetDropLeave");
-        return leave.analyze().has_value();
-    };
     bool overlay_ready = on_drop_overlay();
     // 卡片刚弹出来时可能还没渲染完，最多再等两拍。
     for (int attempt = 1; attempt < 3 && !overlay_ready; ++attempt) {
@@ -660,6 +714,7 @@ bool BlackFlowLifecycleTaskPlugin::take_no_collect_drops()
 
         bool clicked = false;
         bool clicked_choice = false;
+        bool clicked_voucher = false;
         for (const auto& title : title_results) {
             const bool is_choice = title.text.find(DropCardChoiceTitle) != std::string::npos;
             if (title.text.find(DropCardMoneyTitle) == std::string::npos &&
@@ -680,6 +735,7 @@ bool BlackFlowLifecycleTaskPlugin::take_no_collect_drops()
             taken.emplace_back(title.text, click_x);
             clicked = true;
             clicked_choice = is_choice;
+            clicked_voucher = !is_choice && title.text.find(DropCardVoucherTitle) != std::string::npos;
             break;
         }
         if (!clicked) {
@@ -721,6 +777,15 @@ bool BlackFlowLifecycleTaskPlugin::take_no_collect_drops()
                 // 拿完零件回到掉落界面，继续处理剩下的卡（可能还有藏品要跳过）。
                 continue;
             }
+            return true;
+        }
+        if (clicked_voucher && m_store_voucher) {
+            // 招募券的｢收下｣会直接进招募界面；按设置把这张券留存下来，回到掉落界面继续处理剩下的卡。
+            LogInfo << __FUNCTION__ << "voucher card opened the recruit screen, store it";
+            if (store_voucher()) {
+                continue;
+            }
+            // 没找到留存按钮（可能已经存满），交回任务链按默认流程招募。
             return true;
         }
         // 招募券的收下会直接进招募界面，别对着切换中的旧画面再点一次。

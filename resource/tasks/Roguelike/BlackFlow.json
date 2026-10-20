@@ -645,6 +645,18 @@
     "BlackFlow@Roguelike@GetDropLeave": {
         "template": "BlackFlow@Roguelike@GetDropLeave.png"
     },
+    "BlackFlow@Roguelike@StoreRecruitVoucher": {
+        "Doc": "无藏刷开局：战斗掉落的招募券打开招募界面后，点右上角｢把券存下来｣把券留存，不招募。",
+        "template": "BlackFlow@Roguelike@StoreRecruitVoucher.png",
+        "action": "ClickSelf",
+        "roi": [900, 0, 380, 100]
+    },
+    "BlackFlow@Roguelike@StoreRecruitVoucherConfirm": {
+        "Doc": "无藏刷开局：点｢确认留存｣把招募券存下来。",
+        "template": "BlackFlow@Roguelike@StoreRecruitVoucherConfirm.png",
+        "action": "ClickSelf",
+        "roi": [560, 450, 400, 170]
+    },
     "BlackFlow@Roguelike@GetDropCardTitleOcr": {
         "Doc": "无藏刷开局：识别战斗掉落那一排卡片的标题（源石锭/藏品名/招募券/抉择零件），只拿源石锭、招募券和抉择，藏品跳过。券常被识成秀/卷，这里统一替换。",
         "algorithm": "OcrDetect",

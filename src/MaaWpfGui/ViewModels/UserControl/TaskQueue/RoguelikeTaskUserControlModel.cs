@@ -827,6 +827,15 @@ public class RoguelikeTaskUserControlModel : TaskSettingsViewModel, RoguelikeTas
     }
 
     /// <summary>
+    /// Gets or sets a value indicating whether 无藏刷开局把战斗掉落的招募券留存起来，不招募也不晋升。
+    /// </summary>
+    public bool RoguelikeNoCollectStoreVoucher
+    {
+        get => GetTaskConfig<RoguelikeTask>().NoCollectStoreVoucher;
+        set => SetTaskConfig<RoguelikeTask>(t => t.NoCollectStoreVoucher == value, t => t.NoCollectStoreVoucher = value);
+    }
+
+    /// <summary>
     /// Gets or sets a value indicating whether investment is enabled.
     /// </summary>
     public bool RoguelikeInvestmentWithMoreScoreRaw
@@ -1761,6 +1770,7 @@ public class RoguelikeTaskUserControlModel : TaskSettingsViewModel, RoguelikeTas
                 BlackFlowStartAnimal2 = roguelike.BlackFlowStartAnimal2,
                 BlackFlowStartRewards = roguelike.BlackFlowStartRewards,
                 BlackFlowStartRunFastFlight = roguelike.BlackFlowStartRunFastFlight,
+                NoCollectStoreVoucher = roguelike.NoCollectStoreVoucher,
 
                 SamiFirstFloorFoldartal = roguelike.Theme == Theme.Sami && roguelike.Mode == Mode.Collectible && roguelike.SamiFirstFloorFoldartal,
                 SamiStartFloorFoldartal = roguelike.SamiFirstFloorFoldartals,

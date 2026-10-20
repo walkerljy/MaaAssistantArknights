@@ -787,6 +787,8 @@ To enable this mechanism, make sure the selected difficulty is N3 or higher (exc
     <system:String x:Key="GoldTimesLimit">Stops after investing N times</system:String>
     <system:String x:Key="StopOnGoldLimit">Stops when invested ingots reach limit</system:String>
     <system:String x:Key="InvestmentEnabled">Invest ingots</system:String>
+    <system:String x:Key="RoguelikeNoCollectStoreVoucher">Store recruit vouchers</system:String>
+    <system:String x:Key="RoguelikeNoCollectStoreVoucherTip">When enabled, recruit vouchers from battle drops are stored instead of used to recruit, and can be used at the Final node; when disabled, vouchers are recruited as usual.</system:String>
     <system:String x:Key="InvestmentWithMoreScore">Investment mode enables shopping, recruitment, and entering the second floor</system:String>
     <system:String x:Key="RoguelikeCollectibleModeShopping">Enable shopping in the grinding mode</system:String>
     <system:String x:Key="RoguelikeStartWithSelectList">Grinding mode expected rewards</system:String>
