@@ -949,6 +949,7 @@ bool BlackFlowSession::merge_perception(
 
     if (m_map_version.map.floor() != normalized->map.floor) {
         m_map_version.final_exits.clear();
+        m_map_version.template_shops.clear();
         const auto* matched = observation.allow_exit_supplement
                                   ? match_map_template(normalized->map, BlackFlowMapTemplates.templates())
                                   : nullptr;
@@ -958,8 +959,17 @@ bool BlackFlowSession::merge_perception(
             if (definition.terminal_type == NodeType::Final) {
                 m_map_version.final_exits = definition.terminals;
             }
+            m_map_version.template_shops = definition.shops;
             LogInfo << __FUNCTION__ << "Map template selected" << to_string(definition.id) << "exit count"
-                    << m_map_version.final_exits.size();
+                    << m_map_version.final_exits.size() << "shop count" << m_map_version.template_shops.size();
+            // 记录本层识别到的全部节点（含图标坐标），便于核对模板里的固定商店坐标。
+            for (const auto& node : observation.nodes) {
+                if (!node.exists) {
+                    continue;
+                }
+                LogTrace << __FUNCTION__ << "template node" << node.position.row << node.position.column << node.type
+                         << node.displayed_name << node.icon_rect;
+            }
         }
     }
     const NodeId previous_current_node = m_observed_current_node;
@@ -980,6 +990,7 @@ bool BlackFlowSession::merge_perception(
         m_facts.begin_page();
     }
     supplement_map_exits(normalized->map, m_map_version.final_exits);
+    supplement_map_shops(normalized->map, m_map_version.template_shops);
     if (!m_map_version.map.merge(normalized->map, error)) {
         return false;
     }

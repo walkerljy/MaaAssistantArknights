@@ -308,6 +308,8 @@ private:
         ViewportObservation coordinates;
         // 本层沿用首次匹配得到的险路尽头位置；首领层为空。
         std::vector<GridPosition> final_exits;
+        // 本层沿用首次匹配得到的固定商店格子（模板补全用）。
+        std::vector<GridPosition> template_shops;
         PerceptionSummary observation;
     };
 

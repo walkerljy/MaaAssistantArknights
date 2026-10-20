@@ -10,4 +10,5 @@ namespace asst::blackflow
 [[nodiscard]] const MapTemplate*
     match_map_template(const MapObservationBatch& observation, std::span<const MapTemplate> templates);
 void supplement_map_exits(MapObservationBatch& observation, std::span<const GridPosition> exits);
+void supplement_map_shops(MapObservationBatch& observation, std::span<const GridPosition> shops);
 } // namespace asst::blackflow

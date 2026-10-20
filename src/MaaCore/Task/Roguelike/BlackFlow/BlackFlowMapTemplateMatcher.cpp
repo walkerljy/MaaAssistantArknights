@@ -56,4 +56,22 @@ void supplement_map_exits(MapObservationBatch& observation, std::span<const Grid
         node->identity_revealed = true;
     }
 }
+void supplement_map_shops(MapObservationBatch& observation, std::span<const GridPosition> shops)
+{
+    for (const auto& position : shops) {
+        auto node = std::ranges::find(observation.nodes, position, &ObservedNode::position);
+        if (node == observation.nodes.end()) {
+            continue;
+        }
+        // 只补仍然隐藏/未分类的节点；已经被识别成别的类型就不覆盖，模板和实际地图错配时保持识别结果。
+        if (node->type.has_value() && *node->type != NodeType::Unknown && *node->type != NodeType::HideInvisible) {
+            continue;
+        }
+        node->identity_from_template = true;
+        node->type = NodeType::Shop;
+        node->name = "诡意行商";
+        node->identity_state = NodeIdentityState::Classified;
+        node->identity_revealed = true;
+    }
+}
 } // namespace asst::blackflow

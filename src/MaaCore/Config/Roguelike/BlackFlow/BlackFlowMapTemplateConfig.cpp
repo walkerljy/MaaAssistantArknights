@@ -56,7 +56,7 @@ bool BlackFlowMapTemplateConfig::parse(const json::value& value)
             LogError << __FUNCTION__ << "Invalid map template start" << *id;
             return false;
         }
-        blackflow::MapTemplate item { *topology, *floor, *rows, *columns, *origin, *terminal_type, {}, {} };
+        blackflow::MapTemplate item { *topology, *floor, *rows, *columns, *origin, *terminal_type, {}, {}, {} };
         std::set<blackflow::GridPosition> terminals;
         std::set<blackflow::GridPosition> cells;
         std::set<std::pair<blackflow::GridPosition, blackflow::GridPosition>> connections;
@@ -118,6 +118,19 @@ bool BlackFlowMapTemplateConfig::parse(const json::value& value)
         if (visited.size() != cells.size()) {
             LogError << __FUNCTION__ << "Map template graph is disconnected" << *id;
             return false;
+        }
+        // 可选：该布局下固定是商店的格子（游戏里图标仍可能是隐藏节点）。
+        const auto shops = entry.find<std::vector<std::vector<int>>>("shops");
+        if (shops.has_value()) {
+            std::set<blackflow::GridPosition> shop_cells;
+            for (const auto& coordinates : *shops) {
+                const auto shop = position(coordinates);
+                if (!shop || !cells.contains(*shop) || !shop_cells.emplace(*shop).second) {
+                    LogError << __FUNCTION__ << "Invalid map template shop" << *id;
+                    return false;
+                }
+                item.shops.emplace_back(*shop);
+            }
         }
         floors[static_cast<std::size_t>(*floor - 1)] = true;
         templates.emplace_back(std::move(item));

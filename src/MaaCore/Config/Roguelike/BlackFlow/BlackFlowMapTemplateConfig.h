@@ -17,6 +17,8 @@ struct MapTemplate
     NodeType terminal_type = NodeType::Unknown;
     std::vector<GridPosition> terminals;
     std::vector<std::pair<GridPosition, GridPosition>> edges;
+    // 该布局下固定是商店（图标仍显示为隐藏节点）的格子，匹配后直接补成 Shop。
+    std::vector<GridPosition> shops;
 };
 } // namespace asst::blackflow
 
